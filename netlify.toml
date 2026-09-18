@@ -1,0 +1,57 @@
+[build]
+  publish = "frontend"
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/tasks"
+  to = "/tasks.html"
+  status = 200
+
+[[redirects]]
+  from = "/assignments"
+  to = "/assignments.html"
+  status = 200
+
+[[redirects]]
+  from = "/notes"
+  to = "/notes.html"
+  status = 200
+
+[[redirects]]
+  from = "/timetable"
+  to = "/timetable.html"
+  status = 200
+
+[[redirects]]
+  from = "/exams"
+  to = "/exams.html"
+  status = 200
+
+[[redirects]]
+  from = "/expenses"
+  to = "/expenses.html"
+  status = 200
+
+[[redirects]]
+  from = "/progress"
+  to = "/progress.html"
+  status = 200
+
+[[redirects]]
+  from = "/profile"
+  to = "/profile.html"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/register"
+  to = "/register.html"
+  status = 200
