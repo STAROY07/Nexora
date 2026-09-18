@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXORA | Student Utility & Productivity Platform</title>
+  <meta name="description" content="NEXORA is a comprehensive student utility platform to manage daily tasks, assignments, notes, timetable, exams, and personal expenses in one unified place.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/assets/nexora-icon.png">
+</head>
+<body>
+
+  <!-- Landing Navbar -->
+  <header>
+    <nav class="landing-navbar" aria-label="Main Navigation">
+      <div class="landing-brand">
+        <a href="/" style="display: flex; align-items: center;">
+          <img src="/assets/nexora-logo.png" alt="NEXORA" class="brand-logo">
+        </a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="/api/auth/demo-login" class="btn btn-demo btn-sm">Demo Login</a>
+        <a href="/login" class="btn btn-ghost btn-sm">Sign In</a>
+        <a href="/register" class="btn btn-primary btn-sm">Get Started</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero-section">
+      <div class="hero-tag">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        All-in-One Student Workspace
+      </div>
+      <h1 class="hero-title">
+        Everything you need to stay organized, in one place.
+      </h1>
+      <p class="hero-subtitle">
+        NEXORA empowers college students to effortlessly streamline daily to-dos, coursework submissions, study notes, class schedules, exam countdowns, and personal expenses.
+      </p>
+      <div class="hero-actions">
+        <a href="/register" class="btn btn-primary" style="padding: 13px 26px; font-size: 0.98rem;">
+          Create Free Account →
+        </a>
+        <a href="/api/auth/demo-login" class="btn btn-demo" style="padding: 13px 24px; font-size: 0.98rem;">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Explore Demo Account
+        </a>
+        <a href="/login" class="btn btn-secondary" style="padding: 13px 22px; font-size: 0.98rem;">
+          Student Login
+        </a>
+      </div>
+    </section>
+
+    <!-- Features Overview -->
+    <section class="landing-features">
+      <div class="section-header">
+        <h2 class="section-title">Built for Modern Academic Life</h2>
+        <p class="section-subtitle">Seven core utilities engineered to keep your college semester completely organized.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- 1. Task Manager -->
+        <article class="feature-box">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3 class="feature-heading">Task Manager</h3>
+          <p class="feature-text">Stay on top of daily study targets, prioritize tasks with color-coded badges, and mark items complete as you learn.</p>
+        </article>
+
+        <!-- 2. Assignment Tracker -->
+        <article class="feature-box">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <h3 class="feature-heading">Assignment Tracker</h3>
+          <p class="feature-text">Track coursework deadlines by subject, monitor remaining days countdowns, and never miss a submission.</p>
+        </article>
+
+        <!-- 3. Notes Manager -->
+        <article class="feature-box">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <h3 class="feature-heading">Notes Manager</h3>
+          <p class="feature-text">Organize revision pointers, search key concepts instantly across subjects, and star important topics for quick recall.</p>
+        </article>
+
+        <!-- 4. Weekly Timetable -->
+        <article class="feature-box">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3 class="feature-heading">Weekly Timetable</h3>
+          <p class="feature-text">A responsive visual weekly schedule with room numbers and lecture timings tailored for phone and desktop screens.</p>
+        </article>
+
+        <!-- 5. Exam Planner -->
+        <article class="feature-box">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="feature-heading">Exam Planner</h3>
+          <p class="feature-text">Set exam dates, venues, and timings with automated countdown timers to prioritize your revision schedule.</p>
+        </article>
+
+        <!-- 6. Expense Tracker -->
+        <article class="feature-box">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <h3 class="feature-heading">Expense Tracker</h3>
+          <p class="feature-text">Track student spending across food, travel, college supplies, and shopping with automated monthly analytics.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="text-align: center; padding: 40px 20px; border-top: 1px solid var(--border-subtle); color: var(--text-dim); font-size: 0.88rem; background: var(--bg-surface);">
+    <p>NEXORA — Student Utility & Productivity Platform</p>
+  </footer>
+
+</body>
+</html>

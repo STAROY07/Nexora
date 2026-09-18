@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker | NEXORA</title>
+  <meta name="description" content="Track your personal student budget, categories, and monthly expenditure.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/assets/nexora-icon.png">
+</head>
+<body>
+
+  <div class="sidebar-overlay"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Sidebar Navigation">
+      <div class="sidebar-brand">
+        <img src="/assets/nexora-logo.png" alt="NEXORA Logo" class="brand-logo">
+        <span class="brand-title">NEXORA</span>
+      </div>
+
+      <nav class="sidebar-menu">
+        <div class="nav-heading">Main Menu</div>
+        <a href="/dashboard" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="/tasks" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Tasks
+        </a>
+        <a href="/assignments" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Assignments
+        </a>
+        <a href="/notes" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Notes
+        </a>
+        <a href="/timetable" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Timetable
+        </a>
+        <a href="/exams" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Exams
+        </a>
+        <a href="/expenses" class="nav-link active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          Expenses
+        </a>
+        <a href="/progress" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Progress
+        </a>
+
+        <div class="nav-heading" style="margin-top: 10px;">Account</div>
+        <a href="/profile" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar-badge" id="sidebarAvatarBadge">S</div>
+          <div class="user-snippet-info">
+            <div class="user-snippet-name" id="sidebarUserName">Student</div>
+            <div class="user-snippet-course">Active Session</div>
+          </div>
+          <a href="#" class="logout-btn-mini logout-trigger" title="Sign Out">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1 class="page-title">Personal Expense Tracker</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="openAddExpenseModal()">+ Add Expense</button>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <!-- Month Filter and Total Spend Overview -->
+        <div class="expense-summary-bar">
+          <!-- Total Month Card -->
+          <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span class="stat-label">Monthly Spending</span>
+                <input type="month" id="expenseMonthFilter" class="form-input" style="width: auto; padding: 4px 10px; font-size: 0.85rem;">
+              </div>
+              <div class="stat-value" id="expenseMonthTotal" style="font-size: 2.2rem; color: var(--text-main);">₹0</div>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">Total recorded expenses for selected month</p>
+            </div>
+            <div style="margin-top: 20px;">
+              <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="openAddExpenseModal()">+ Record New Expense</button>
+            </div>
+          </div>
+
+          <!-- Category Breakdown -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Category Breakdown</h3>
+            </div>
+            <div id="categorySummaryContainer">
+              <p style="color: var(--text-dim); font-size: 0.88rem;">Loading category breakdown...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expense Transactions Table -->
+        <div class="card" style="padding: 16px;">
+          <div class="card-header">
+            <h3 class="card-title">Expense History</h3>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="expense-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="expensesTableBody">
+                <tr><td colspan="5" style="text-align: center; padding: 20px;">Loading expenses...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Expense Modal -->
+  <div class="modal-backdrop" id="expenseModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="expModalTitle">Add Expense</h3>
+        <button class="modal-close" onclick="closeModal('expenseModal')" aria-label="Close modal">✕</button>
+      </div>
+      <form id="expenseForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expCategory" class="form-label">Category *</label>
+              <select id="expCategory" class="form-select" required>
+                <option value="Food">Food</option>
+                <option value="Travel">Travel</option>
+                <option value="College">College</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="expAmount" class="form-label">Amount (₹) *</label>
+              <input type="number" id="expAmount" step="0.01" min="0.01" class="form-input" placeholder="e.g. 250" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="expDate" class="form-label">Expense Date *</label>
+            <input type="date" id="expDate" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="expDescription" class="form-label">Description / Note</label>
+            <input type="text" id="expDescription" class="form-input" placeholder="e.g. Canteen lunch, Bus pass, Books...">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('expenseModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/expenses.js"></script>
+</body>
+</html>

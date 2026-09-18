@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration | NEXORA</title>
+  <meta name="description" content="Create a new NEXORA account to organize your academic tasks, timetable, notes, and exams.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/assets/nexora-icon.png">
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-card" style="max-width: 480px;">
+      <div class="auth-header">
+        <a href="/">
+          <img src="/assets/nexora-logo.png" alt="NEXORA Logo" class="auth-logo">
+        </a>
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join NEXORA to streamline your student life</p>
+      </div>
+
+      <!-- Demo Quick Access -->
+      <div class="demo-box" style="margin-bottom: 20px;">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Want to test without signing up?</span>
+        <div style="margin-top: 6px;">
+          <a href="/api/auth/demo-login" class="btn btn-demo btn-sm">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            1-Click Demo Login
+          </a>
+        </div>
+      </div>
+
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="regName" class="form-label">Full Name *</label>
+          <input type="text" id="regName" class="form-input" placeholder="e.g. Aditiya Singh" required autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail" class="form-label">College / Personal Email *</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="aditiya@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword" class="form-label">Password * (min 6 characters)</label>
+          <input type="password" id="regPassword" class="form-input" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regCourse" class="form-label">Course / Degree</label>
+            <input type="text" id="regCourse" class="form-input" placeholder="e.g. BSc CS">
+          </div>
+          <div class="form-group">
+            <label for="regSemester" class="form-label">Semester / Year</label>
+            <select id="regSemester" class="form-select">
+              <option value="">Select Semester</option>
+              <option value="Semester 1">Semester 1</option>
+              <option value="Semester 2">Semester 2</option>
+              <option value="Semester 3">Semester 3</option>
+              <option value="Semester 4">Semester 4</option>
+              <option value="Semester 5">Semester 5</option>
+              <option value="Semester 6">Semester 6</option>
+              <option value="Semester 7">Semester 7</option>
+              <option value="Semester 8">Semester 8</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 12px;">
+          Create Student Account
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="/login">Sign in here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>
