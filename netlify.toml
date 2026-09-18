@@ -2,6 +2,11 @@
   publish = "frontend"
 
 [[redirects]]
+  from = "/api/auth/demo-login"
+  to = "/dashboard.html"
+  status = 302
+
+[[redirects]]
   from = "/dashboard"
   to = "/dashboard.html"
   status = 200
