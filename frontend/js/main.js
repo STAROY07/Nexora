@@ -1,6 +1,6 @@
 /**
  * NEXORA - Student Utility & Productivity Platform
- * Main Frontend Script: Navigation, Demo Access, Storage Fallback, and Common Utilities
+ * Main Frontend Script: Navigation, Rich Demo Access, LocalStorage Fallback, and Common Utilities
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
 /* --- Sample Seed Data for Static Hosting (Netlify) & Offline Demo --- */
 const DEFAULT_DEMO_USER = {
   id: 1,
-  name: 'Aditiya Singh (Demo)',
+  name: 'Aditiya Singh',
   email: 'demo@nexora.com',
   course: 'BSc Computer Science',
   semester: 'Semester 4',
-  created_at: '2026-01-15 10:00'
+  created_at: '2026-01-10 09:30'
 };
 
 function getSeedData() {
@@ -33,53 +33,58 @@ function getSeedData() {
 
   return {
     tasks: [
-      { id: 1, title: 'Complete DBMS Normalization Exercises (3NF & BCNF)', description: 'Solve problem set from Chapter 4 textbook', priority: 'High', due_date: addDays(1), status: 'Pending' },
-      { id: 2, title: 'Implement Dijkstra Algorithm in Python', description: 'Graph theory lab practice for algorithms class', priority: 'Medium', due_date: addDays(3), status: 'Pending' },
-      { id: 3, title: 'Review Operating Systems Virtual Memory Paging slides', description: 'Lecture 12-14 revision for next class', priority: 'Low', due_date: addDays(0), status: 'Completed' },
-      { id: 4, title: 'Submit Web Development Mini Project Proposal', description: 'Prepare documentation and architecture diagram', priority: 'High', due_date: addDays(2), status: 'Pending' },
-      { id: 5, title: 'Buy reference books for Computer Networks', description: 'Andrew Tanenbaum 5th edition', priority: 'Low', due_date: addDays(5), status: 'Completed' }
+      { id: 1, title: 'Complete DBMS Normalization Problem Set (3NF & BCNF)', description: 'Solve textbook exercises from Chapter 4 and create decomposition trees.', priority: 'High', due_date: addDays(1), status: 'Pending' },
+      { id: 2, title: 'Implement Dijkstra Shortest Path Algorithm in Python', description: 'Write unit tests and test with adjacency matrix for Algorithms Lab.', priority: 'Medium', due_date: addDays(3), status: 'Pending' },
+      { id: 3, title: 'Review Operating Systems Virtual Memory Paging slides', description: 'Lecture 12-14 revision on TLB hit ratio and Page Fault handling.', priority: 'Low', due_date: addDays(0), status: 'Completed' },
+      { id: 4, title: 'Prepare Web Development Mini-Project Demo & Viva Slides', description: 'Test full-stack application workflow and document ER diagrams.', priority: 'High', due_date: addDays(2), status: 'Pending' },
+      { id: 5, title: 'Submit Computer Networks Wireshark Packet Analysis Report', description: 'Analyze TCP 3-way handshake and DNS query packets capture files.', priority: 'High', due_date: addDays(4), status: 'Pending' },
+      { id: 6, title: 'Buy Reference Book: Computer Networks (Tanenbaum 5th Ed)', description: 'Visit college library or bookstore for semester reference book.', priority: 'Low', due_date: addDays(5), status: 'Completed' }
     ],
     assignments: [
-      { id: 1, title: 'CPU Scheduling Algorithms Lab Report', subject: 'Operating Systems', description: 'Document Round Robin and FCFS simulation outputs with Gantt charts.', submission_date: addDays(3), status: 'Pending' },
-      { id: 2, title: 'SQL Schema Design & ER Diagram for Library Management', subject: 'DBMS', description: 'Design relational schema with DDL queries, primary keys, and foreign keys.', submission_date: addDays(7), status: 'Pending' },
-      { id: 3, title: 'Socket Programming TCP/IP Client-Server in C', subject: 'Computer Networks', description: 'Implement multi-client chat server using POSIX sockets.', submission_date: addDays(12), status: 'Pending' },
-      { id: 4, title: 'Software Requirement Specification (SRS) Document', subject: 'Software Engineering', description: 'IEEE format specification for student management app.', submission_date: addDays(-2), status: 'Completed' }
+      { id: 1, title: 'CPU Scheduling Algorithms Lab Simulation', subject: 'Operating Systems', description: 'Simulate Round Robin, FCFS, and Priority scheduling algorithms in C/Python with Gantt chart calculation.', submission_date: addDays(3), status: 'Pending' },
+      { id: 2, title: 'SQL Schema Design & Relational ER Model for E-Commerce', subject: 'DBMS', description: 'Design 3NF relational schema with primary keys, foreign keys, triggers, and sample analytical queries.', submission_date: addDays(7), status: 'Pending' },
+      { id: 3, title: 'TCP/IP Multi-Client Chat Server in Python', subject: 'Computer Networks', description: 'Implement multi-threaded client-server architecture using socket programming and select module.', submission_date: addDays(12), status: 'Pending' },
+      { id: 4, title: 'Software Requirements Specification (SRS) Document', subject: 'Software Engineering', description: 'IEEE 830 standard documentation with functional and non-functional requirements.', submission_date: addDays(-2), status: 'Completed' },
+      { id: 5, title: 'Dynamic Programming Problem Set (0/1 Knapsack & LCS)', subject: 'Design & Analysis of Algorithms', description: 'Complete time and space complexity proofs with recursion tree diagrams.', submission_date: addDays(9), status: 'Pending' }
     ],
     notes: [
-      { id: 1, title: 'Database Indexing & B+ Trees', subject: 'DBMS', content: 'Key Concepts:\n- Clustered Index: Determines physical order of data rows.\n- Non-Clustered Index: Contains pointers to data rows.\n- B+ Trees: High fanout, all data stored in leaf nodes linked sequentially.', is_important: 1, updated_at: '2026-09-15' },
-      { id: 2, title: 'Process Synchronization & Semaphores', subject: 'Operating Systems', content: 'Mutual Exclusion Conditions:\n1. No two processes inside Critical Section simultaneously.\n2. No assumptions about CPU speeds.\n3. Starvation freedom.\n\nBinary vs Counting Semaphores.', is_important: 1, updated_at: '2026-09-14' },
-      { id: 3, title: 'TCP 3-Way Handshake & Congestion Control', subject: 'Computer Networks', content: 'Connection Setup:\n1. SYN (seq = x)\n2. SYN-ACK (seq = y, ack = x+1)\n3. ACK (seq = x+1, ack = y+1)', is_important: 0, updated_at: '2026-09-12' },
-      { id: 4, title: 'Asymptotic Notations & Master Theorem', subject: 'Design & Analysis of Algorithms', content: 'T(n) = aT(n/b) + f(n)\n- Case 1: Theta(n^log_b(a))\n- Case 2: Theta(n^log_b(a) * log^k(n))\n- Case 3: Omega(n^(log_b(a) + e))', is_important: 1, updated_at: '2026-09-10' }
+      { id: 1, title: 'DBMS Indexing: B+ Trees vs Hash Indexing', subject: 'DBMS', content: 'Key Concepts:\n- Clustered Index: Modifies physical storage order of data rows. Only 1 per table.\n- Non-Clustered Index: Separate search key index containing row pointers (RID).\n- B+ Tree Indexing: High fanout, log(N) lookup, all data stored in leaf nodes linked sequentially for fast range scans.\n- Hash Indexing: O(1) exact match lookup, but does NOT support range queries (<, >).', is_important: 1, updated_at: '2026-09-15' },
+      { id: 2, title: 'Process Synchronization, Critical Section & Semaphores', subject: 'Operating Systems', content: 'Mutual Exclusion Conditions:\n1. Mutual Exclusion: At most one process in Critical Section.\n2. Progress: Selection of next process cannot be postponed indefinitely.\n3. Bounded Waiting: Bound on number of times other processes enter CS (no starvation).\n\nBinary vs Counting Semaphores.\nClassical IPC Problems: Producer-Consumer, Readers-Writers, Dining Philosophers.', is_important: 1, updated_at: '2026-09-14' },
+      { id: 3, title: 'Computer Networks: TCP 3-Way Handshake & Congestion Control', subject: 'Computer Networks', content: 'Connection Establishment:\n1. Client -> Server: SYN (seq = x)\n2. Server -> Client: SYN-ACK (seq = y, ack = x+1)\n3. Client -> Server: ACK (seq = x+1, ack = y+1)\n\nCongestion Control: Slow Start, Congestion Avoidance (AIMD), Fast Retransmit, Fast Recovery on 3 duplicate ACKs.', is_important: 1, updated_at: '2026-09-12' },
+      { id: 4, title: 'Asymptotic Notations & Master Theorem Analysis', subject: 'Design & Analysis of Algorithms', content: 'Master Theorem Formulation:\nT(n) = a*T(n/b) + f(n), where a >= 1, b > 1\n\n- Case 1: If f(n) = O(n^(log_b(a) - ε)), then T(n) = Θ(n^log_b(a))\n- Case 2: If f(n) = Θ(n^log_b(a) * log^k(n)), then T(n) = Θ(n^log_b(a) * log^(k+1)(n))\n- Case 3: If f(n) = Ω(n^(log_b(a) + ε)), then T(n) = Θ(f(n))', is_important: 1, updated_at: '2026-09-10' }
     ],
     timetable: [
-      { id: 1, day_of_week: 'Monday', subject: 'Database Systems', start_time: '09:00', end_time: '10:30', room: 'Room 302' },
-      { id: 2, day_of_week: 'Monday', subject: 'Operating Systems Lab', start_time: '11:00', end_time: '13:00', room: 'Lab 2' },
-      { id: 3, day_of_week: 'Tuesday', subject: 'Computer Networks', start_time: '10:00', end_time: '11:30', room: 'Room 205' },
-      { id: 4, day_of_week: 'Tuesday', subject: 'Data Structures & Algorithms', start_time: '12:00', end_time: '13:30', room: 'Room 302' },
-      { id: 5, day_of_week: 'Wednesday', subject: 'Operating Systems', start_time: '09:30', end_time: '11:00', room: 'Room 302' },
-      { id: 6, day_of_week: 'Wednesday', subject: 'Web Technologies', start_time: '11:30', end_time: '13:00', room: 'Lab 4' },
-      { id: 7, day_of_week: 'Thursday', subject: 'Computer Networks Lab', start_time: '09:00', end_time: '11:00', room: 'Lab 1' },
-      { id: 8, day_of_week: 'Thursday', subject: 'Database Systems', start_time: '11:30', end_time: '13:00', room: 'Room 302' },
-      { id: 9, day_of_week: 'Friday', subject: 'Software Engineering', start_time: '10:00', end_time: '11:30', room: 'Room 205' },
-      { id: 10, day_of_week: 'Friday', subject: 'Algorithms Seminar', start_time: '12:00', end_time: '13:30', room: 'Seminar Hall B' }
+      { id: 1, day: 'Monday', subject: 'Database Systems', start_time: '09:00', end_time: '10:30', room: 'Room 302' },
+      { id: 2, day: 'Monday', subject: 'Operating Systems Lab', start_time: '11:00', end_time: '13:00', room: 'Computer Lab 2' },
+      { id: 3, day: 'Tuesday', subject: 'Computer Networks', start_time: '10:00', end_time: '11:30', room: 'Room 205' },
+      { id: 4, day: 'Tuesday', subject: 'Design & Analysis of Algorithms', start_time: '12:00', end_time: '13:30', room: 'Room 302' },
+      { id: 5, day: 'Wednesday', subject: 'Operating Systems Theory', start_time: '09:30', end_time: '11:00', room: 'Room 302' },
+      { id: 6, day: 'Wednesday', subject: 'Web Technologies & Frameworks', start_time: '11:30', end_time: '13:00', room: 'Lab 4' },
+      { id: 7, day: 'Thursday', subject: 'Computer Networks Lab', start_time: '09:00', end_time: '11:00', room: 'Network Lab 1' },
+      { id: 8, day: 'Thursday', subject: 'Database Management Systems', start_time: '11:30', end_time: '13:00', room: 'Room 302' },
+      { id: 9, day: 'Friday', subject: 'Software Engineering', start_time: '10:00', end_time: '11:30', room: 'Room 205' },
+      { id: 10, day: 'Friday', subject: 'Technical Seminar & Project Viva', start_time: '12:00', end_time: '13:30', room: 'Seminar Hall B' }
     ],
     exams: [
-      { id: 1, subject: 'Database Management Systems', exam_date: addDays(14), start_time: '10:00', room: 'Exam Hall A', notes: 'Chapters 1-6 (Relational Algebra, SQL, Normalization, Transactions)' },
-      { id: 2, subject: 'Operating Systems & Architecture', exam_date: addDays(21), start_time: '14:00', room: 'Exam Hall B', notes: 'Processes, CPU Scheduling, Memory Management, File Systems' },
-      { id: 3, subject: 'Computer Networks & Protocols', exam_date: addDays(28), start_time: '10:00', room: 'Exam Hall A', notes: 'OSI Model, TCP/IP, Routing Algorithms, Network Security' }
+      { id: 1, exam_name: 'Mid-Term Theory Exam', subject: 'Database Management Systems', exam_date: addDays(14), exam_time: '10:00', venue: 'Exam Hall A', notes: 'Chapters 1-6 (ER Model, SQL, Normalization, Transactions)' },
+      { id: 2, exam_name: 'Semester Practical Exam', subject: 'Operating Systems Lab', exam_date: addDays(21), exam_time: '14:00', venue: 'Computer Lab 2', notes: 'Shell Scripting, Process Scheduling, Semaphore programs' },
+      { id: 3, exam_name: 'Final Semester Exam', subject: 'Computer Networks', exam_date: addDays(28), exam_time: '10:00', venue: 'Main Auditorium', notes: 'OSI 7 Layers, TCP/IP Suite, Subnetting, Routing Protocols' },
+      { id: 4, exam_name: 'Semester Written Exam', subject: 'Design & Analysis of Algorithms', exam_date: addDays(35), exam_time: '14:00', venue: 'Exam Hall B', notes: 'Greedy, Dynamic Programming, Graph Traversals, NP-Completeness' }
     ],
     expenses: [
-      { id: 1, category: 'College', amount: 850.00, expense_date: addDays(-2), description: 'College Textbook: DBMS 7th Edition' },
-      { id: 2, category: 'Food', amount: 240.00, expense_date: addDays(-1), description: 'College Canteen Lunch & Coffee' },
-      { id: 3, category: 'Travel', amount: 150.00, expense_date: addDays(0), description: 'Metro Pass Weekly Recharge' },
-      { id: 4, category: 'College', amount: 350.00, expense_date: addDays(-5), description: 'Lab Stationery, Files & Spiral Notebooks' },
-      { id: 5, category: 'Food', amount: 180.00, expense_date: addDays(-3), description: 'Study Group Snacks & Tea' }
+      { id: 1, category: 'College', amount: 850.00, expense_date: addDays(-1), description: 'Database System Concepts Textbook (Korth 7th Ed)' },
+      { id: 2, category: 'Food', amount: 180.00, expense_date: addDays(0), description: 'College Canteen Lunch & Coffee' },
+      { id: 3, category: 'Travel', amount: 450.00, expense_date: addDays(-2), description: 'Monthly Metro Card Student Recharge' },
+      { id: 4, category: 'College', amount: 320.00, expense_date: addDays(-4), description: 'Practical Lab Files & Spiral Notebooks' },
+      { id: 5, category: 'Food', amount: 140.00, expense_date: addDays(-3), description: 'Study Group Evening Snacks & Chai' },
+      { id: 6, category: 'Shopping', amount: 650.00, expense_date: addDays(-6), description: 'Scientific Calculator & Pen Pack' },
+      { id: 7, category: 'Other', amount: 190.00, expense_date: addDays(-5), description: 'Mini-Project Documentation Printouts' }
     ]
   };
 }
 
-function initLocalStorageData() {
-  if (!localStorage.getItem('nexora_initialized')) {
+function initLocalStorageData(force = false) {
+  if (force || !localStorage.getItem('nexora_initialized')) {
     const seed = getSeedData();
     Object.keys(seed).forEach(key => {
       localStorage.setItem(`nexora_${key}`, JSON.stringify(seed[key]));
@@ -148,11 +153,10 @@ function initDemoLoginButtons() {
   demoButtons.forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
-      initLocalStorageData();
+      initLocalStorageData(true);
       localStorage.setItem('nexora_user', JSON.stringify(DEFAULT_DEMO_USER));
       
       try {
-        // Try backend login first if available
         const res = await fetch('/api/auth/demo-login', { method: 'POST' });
         if (res.ok) {
           const data = await res.json();
@@ -165,7 +169,7 @@ function initDemoLoginButtons() {
       showToast('Welcome to Demo Account!', 'success');
       setTimeout(() => {
         window.location.href = '/dashboard';
-      }, 400);
+      }, 300);
     });
   });
 }
@@ -185,7 +189,7 @@ function initLogoutHandlers() {
       showToast('Logged out successfully', 'info');
       setTimeout(() => {
         window.location.href = '/login';
-      }, 500);
+      }, 400);
     });
   });
 }
@@ -235,7 +239,22 @@ function showToast(message, type = 'info') {
   }, 3500);
 }
 
-/* --- 9. Robust API Fetch Wrapper with Client-Side Fallback --- */
+/* --- 9. Helper to calculate remaining days --- */
+function calcDaysRemaining(targetDateStr) {
+  if (!targetDateStr) return { days: 0, is_past: false };
+  const target = new Date(targetDateStr);
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+  const diffDays = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+  return {
+    days: Math.abs(diffDays),
+    is_past: diffDays < 0,
+    days_remaining: Math.max(0, diffDays)
+  };
+}
+
+/* --- 10. Robust API Fetch Wrapper with Client-Side Fallback --- */
 async function fetchAPI(url, options = {}) {
   try {
     const defaultHeaders = {
@@ -256,15 +275,13 @@ async function fetchAPI(url, options = {}) {
       return null;
     }
 
-    // If 404 or backend unavailable (e.g. Netlify), use LocalStorage Mock Engine
     return handleClientFallback(url, options);
   } catch (error) {
-    // Network / Offline / Static host fallback
     return handleClientFallback(url, options);
   }
 }
 
-/* --- 10. Client-Side Mock Data Engine for Static Hosts --- */
+/* --- 11. Client-Side Mock Data Engine for Static Hosts & Offline Demo --- */
 function handleClientFallback(url, options = {}) {
   initLocalStorageData();
   const method = (options.method || 'GET').toUpperCase();
@@ -310,6 +327,17 @@ function handleClientFallback(url, options = {}) {
     const pendingAssignments = assignments.filter(a => a.status !== 'Completed').length;
     const monthlyExpenses = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
 
+    const formattedAssignments = assignments.slice(0, 3).map(a => ({
+      ...a,
+      days_remaining: calcDaysRemaining(a.submission_date).days_remaining
+    }));
+
+    const formattedExams = exams.slice(0, 3).map(ex => ({
+      ...ex,
+      days_remaining: calcDaysRemaining(ex.exam_date).days_remaining,
+      is_past: calcDaysRemaining(ex.exam_date).is_past
+    }));
+
     return {
       success: true,
       stats: {
@@ -320,24 +348,146 @@ function handleClientFallback(url, options = {}) {
         total_notes: notes.length
       },
       today_tasks: tasks.slice(0, 4),
-      upcoming_assignments: assignments.slice(0, 3),
-      upcoming_exams: exams.slice(0, 3),
+      upcoming_assignments: formattedAssignments,
+      upcoming_exams: formattedExams,
       recent_notes: notes.slice(0, 3)
     };
   }
 
-  // Helper for generic collection CRUD
-  const collections = ['tasks', 'assignments', 'notes', 'timetable', 'exams', 'expenses'];
-  for (const col of collections) {
+  // 6. Timetable
+  if (url.includes('/api/timetable')) {
+    let items = JSON.parse(localStorage.getItem('nexora_timetable') || '[]');
+    if (method === 'GET') {
+      const formatted = items.map(c => ({
+        ...c,
+        start_time_str: c.start_time,
+        end_time_str: c.end_time
+      }));
+      return { success: true, timetable: formatted };
+    }
+    if (method === 'POST') {
+      const newItem = { id: Date.now(), ...body };
+      items.push(newItem);
+      localStorage.setItem('nexora_timetable', JSON.stringify(items));
+      return { success: true, message: 'Class added to timetable!', id: newItem.id };
+    }
+    if (method === 'DELETE') {
+      const idMatch = url.match(/\/api\/timetable\/(\d+)/);
+      if (idMatch) {
+        items = items.filter(item => item.id !== Number(idMatch[1]));
+        localStorage.setItem('nexora_timetable', JSON.stringify(items));
+        return { success: true, message: 'Class removed from timetable!' };
+      }
+    }
+  }
+
+  // 7. Exams
+  if (url.includes('/api/exams')) {
+    let items = JSON.parse(localStorage.getItem('nexora_exams') || '[]');
+    if (method === 'GET') {
+      const formatted = items.map(ex => {
+        const diff = calcDaysRemaining(ex.exam_date);
+        return {
+          ...ex,
+          days_remaining: diff.days_remaining,
+          is_past: diff.is_past
+        };
+      });
+      return { success: true, exams: formatted };
+    }
+    if (method === 'POST') {
+      const newItem = { id: Date.now(), ...body };
+      items.unshift(newItem);
+      localStorage.setItem('nexora_exams', JSON.stringify(items));
+      return { success: true, message: 'Exam scheduled successfully!', id: newItem.id };
+    }
+    if (method === 'DELETE') {
+      const idMatch = url.match(/\/api\/exams\/(\d+)/);
+      if (idMatch) {
+        items = items.filter(item => item.id !== Number(idMatch[1]));
+        localStorage.setItem('nexora_exams', JSON.stringify(items));
+        return { success: true, message: 'Exam removed!' };
+      }
+    }
+  }
+
+  // 8. Assignments
+  if (url.includes('/api/assignments')) {
+    let items = JSON.parse(localStorage.getItem('nexora_assignments') || '[]');
+    if (method === 'GET') {
+      const formatted = items.map(a => ({
+        ...a,
+        days_remaining: calcDaysRemaining(a.submission_date).days_remaining
+      }));
+      return { success: true, assignments: formatted };
+    }
+    if (method === 'POST') {
+      const newItem = { id: Date.now(), status: 'Pending', ...body };
+      items.unshift(newItem);
+      localStorage.setItem('nexora_assignments', JSON.stringify(items));
+      return { success: true, message: 'Assignment added successfully!', id: newItem.id };
+    }
+    if (method === 'PUT' || method === 'PATCH') {
+      const idMatch = url.match(/\/api\/assignments\/(\d+)/);
+      const itemId = idMatch ? Number(idMatch[1]) : body.id;
+      items = items.map(item => item.id === itemId ? { ...item, ...body } : item);
+      localStorage.setItem('nexora_assignments', JSON.stringify(items));
+      return { success: true, message: 'Assignment updated!' };
+    }
+    if (method === 'DELETE') {
+      const idMatch = url.match(/\/api\/assignments\/(\d+)/);
+      if (idMatch) {
+        items = items.filter(item => item.id !== Number(idMatch[1]));
+        localStorage.setItem('nexora_assignments', JSON.stringify(items));
+        return { success: true, message: 'Assignment deleted!' };
+      }
+    }
+  }
+
+  // 9. Expenses
+  if (url.includes('/api/expenses')) {
+    let items = JSON.parse(localStorage.getItem('nexora_expenses') || '[]');
+    if (method === 'GET') {
+      const formatted = items.map(e => ({
+        ...e,
+        expense_date_str: e.expense_date
+      }));
+      const total = items.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+      return { success: true, expenses: formatted, month_total: total };
+    }
+    if (method === 'POST') {
+      const newItem = { id: Date.now(), ...body };
+      items.unshift(newItem);
+      localStorage.setItem('nexora_expenses', JSON.stringify(items));
+      return { success: true, message: 'Expense recorded!', id: newItem.id };
+    }
+    if (method === 'PUT' || method === 'PATCH') {
+      const idMatch = url.match(/\/api\/expenses\/(\d+)/);
+      const itemId = idMatch ? Number(idMatch[1]) : body.id;
+      items = items.map(item => item.id === itemId ? { ...item, ...body } : item);
+      localStorage.setItem('nexora_expenses', JSON.stringify(items));
+      return { success: true, message: 'Expense updated!' };
+    }
+    if (method === 'DELETE') {
+      const idMatch = url.match(/\/api\/expenses\/(\d+)/);
+      if (idMatch) {
+        items = items.filter(item => item.id !== Number(idMatch[1]));
+        localStorage.setItem('nexora_expenses', JSON.stringify(items));
+        return { success: true, message: 'Expense deleted!' };
+      }
+    }
+  }
+
+  // 10. Tasks & Notes generic CRUD
+  const simpleCols = ['tasks', 'notes'];
+  for (const col of simpleCols) {
     if (url.includes(`/api/${col}`)) {
       let items = JSON.parse(localStorage.getItem(`nexora_${col}`) || '[]');
 
-      // GET Collection
       if (method === 'GET' && !url.match(new RegExp(`/api/${col}/\\d+`))) {
         return { success: true, [col]: items };
       }
 
-      // POST Create
       if (method === 'POST') {
         const newItem = { id: Date.now(), ...body };
         items.unshift(newItem);
@@ -345,7 +495,6 @@ function handleClientFallback(url, options = {}) {
         return { success: true, message: 'Added successfully!', id: newItem.id };
       }
 
-      // PUT / PATCH Update
       if (method === 'PUT' || method === 'PATCH') {
         const idMatch = url.match(new RegExp(`/api/${col}/(\\d+)`));
         const itemId = idMatch ? Number(idMatch[1]) : body.id;
@@ -354,12 +503,10 @@ function handleClientFallback(url, options = {}) {
         return { success: true, message: 'Updated successfully!' };
       }
 
-      // DELETE Remove
       if (method === 'DELETE') {
         const idMatch = url.match(new RegExp(`/api/${col}/(\\d+)`));
         if (idMatch) {
-          const itemId = Number(idMatch[1]);
-          items = items.filter(item => item.id !== itemId);
+          items = items.filter(item => item.id !== Number(idMatch[1]));
           localStorage.setItem(`nexora_${col}`, JSON.stringify(items));
           return { success: true, message: 'Deleted successfully!' };
         }
@@ -367,7 +514,7 @@ function handleClientFallback(url, options = {}) {
     }
   }
 
-  // Progress Summary
+  // 11. Progress Summary
   if (url.includes('/api/progress/summary')) {
     const tasks = JSON.parse(localStorage.getItem('nexora_tasks') || '[]');
     const assignments = JSON.parse(localStorage.getItem('nexora_assignments') || '[]');
@@ -387,7 +534,7 @@ function handleClientFallback(url, options = {}) {
   return { success: true };
 }
 
-/* --- 11. Helper: Escape HTML to prevent XSS --- */
+/* --- 12. Helper: Escape HTML to prevent XSS --- */
 function escapeHTML(str) {
   if (!str) return '';
   return String(str)
