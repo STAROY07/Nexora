@@ -212,6 +212,7 @@ img {
   height: 18px;
   stroke-width: 2;
   stroke: currentColor;
+  fill: none;
   flex-shrink: 0;
   transition: transform var(--transition-fast);
 }

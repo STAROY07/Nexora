@@ -1,9 +1,12 @@
 /**
  * NEXORA - Student Utility & Productivity Platform
- * Main Frontend Script: Navigation, Rich Demo Access, LocalStorage Fallback, and Common Utilities
+ * Main Frontend Script: Navigation, LocalStorage Fallback Store, and Common Utilities
  */
 
+const DATA_STORAGE_VERSION = 'nexora_data_v4';
+
 document.addEventListener('DOMContentLoaded', () => {
+  initLocalStorageData();
   initMobileDrawer();
   initActiveNavLink();
   initTodayDateChip();
@@ -84,13 +87,14 @@ function getSeedData() {
 }
 
 function initLocalStorageData(force = false) {
-  if (force || !localStorage.getItem('nexora_initialized')) {
+  const currentVer = localStorage.getItem('nexora_version');
+  if (force || currentVer !== DATA_STORAGE_VERSION) {
     const seed = getSeedData();
     Object.keys(seed).forEach(key => {
       localStorage.setItem(`nexora_${key}`, JSON.stringify(seed[key]));
     });
     localStorage.setItem('nexora_user', JSON.stringify(DEFAULT_DEMO_USER));
-    localStorage.setItem('nexora_initialized', 'true');
+    localStorage.setItem('nexora_version', DATA_STORAGE_VERSION);
   }
 }
 
@@ -241,14 +245,14 @@ function showToast(message, type = 'info') {
 
 /* --- 9. Helper to calculate remaining days --- */
 function calcDaysRemaining(targetDateStr) {
-  if (!targetDateStr) return { days: 0, is_past: false };
+  if (!targetDateStr) return { days_left: 0, is_past: false, days_remaining: 0 };
   const target = new Date(targetDateStr);
   const now = new Date();
   now.setHours(0, 0, 0, 0);
   target.setHours(0, 0, 0, 0);
   const diffDays = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
   return {
-    days: Math.abs(diffDays),
+    days_left: diffDays,
     is_past: diffDays < 0,
     days_remaining: Math.max(0, diffDays)
   };
@@ -315,31 +319,35 @@ function handleClientFallback(url, options = {}) {
     return { success: true, message: 'Profile updated successfully!', user: updated };
   }
 
-  // 5. Dashboard Stats
-  if (url.includes('/api/dashboard/stats')) {
+  // 5. Dashboard Summary / Stats
+  if (url.includes('/api/dashboard/summary') || url.includes('/api/dashboard/stats')) {
     const tasks = JSON.parse(localStorage.getItem('nexora_tasks') || '[]');
     const assignments = JSON.parse(localStorage.getItem('nexora_assignments') || '[]');
     const exams = JSON.parse(localStorage.getItem('nexora_exams') || '[]');
     const expenses = JSON.parse(localStorage.getItem('nexora_expenses') || '[]');
     const notes = JSON.parse(localStorage.getItem('nexora_notes') || '[]');
+    const user = JSON.parse(localStorage.getItem('nexora_user') || 'null') || DEFAULT_DEMO_USER;
 
     const activeTasks = tasks.filter(t => t.status !== 'Completed').length;
     const pendingAssignments = assignments.filter(a => a.status !== 'Completed').length;
     const monthlyExpenses = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
 
-    const formattedAssignments = assignments.slice(0, 3).map(a => ({
+    const formattedAssignments = assignments.slice(0, 4).map(a => ({
       ...a,
-      days_remaining: calcDaysRemaining(a.submission_date).days_remaining
+      days_left: calcDaysRemaining(a.submission_date).days_left
     }));
 
-    const formattedExams = exams.slice(0, 3).map(ex => ({
+    const formattedExams = exams.slice(0, 4).map(ex => ({
       ...ex,
+      exam_date_str: ex.exam_date,
+      exam_time_str: ex.exam_time,
       days_remaining: calcDaysRemaining(ex.exam_date).days_remaining,
       is_past: calcDaysRemaining(ex.exam_date).is_past
     }));
 
     return {
       success: true,
+      user_name: user.name || 'Aditiya Singh',
       stats: {
         active_tasks: activeTasks,
         pending_assignments: pendingAssignments,
@@ -347,10 +355,10 @@ function handleClientFallback(url, options = {}) {
         monthly_expenses: monthlyExpenses,
         total_notes: notes.length
       },
-      today_tasks: tasks.slice(0, 4),
+      today_tasks: tasks.slice(0, 5),
       upcoming_assignments: formattedAssignments,
       upcoming_exams: formattedExams,
-      recent_notes: notes.slice(0, 3)
+      recent_notes: notes.slice(0, 4)
     };
   }
 
@@ -366,7 +374,14 @@ function handleClientFallback(url, options = {}) {
       return { success: true, timetable: formatted };
     }
     if (method === 'POST') {
-      const newItem = { id: Date.now(), ...body };
+      const newItem = {
+        id: Date.now(),
+        day: body.day,
+        subject: body.subject,
+        start_time: body.start_time,
+        end_time: body.end_time,
+        room: body.room
+      };
       items.push(newItem);
       localStorage.setItem('nexora_timetable', JSON.stringify(items));
       return { success: true, message: 'Class added to timetable!', id: newItem.id };
@@ -389,6 +404,8 @@ function handleClientFallback(url, options = {}) {
         const diff = calcDaysRemaining(ex.exam_date);
         return {
           ...ex,
+          exam_date_str: ex.exam_date,
+          exam_time_str: ex.exam_time,
           days_remaining: diff.days_remaining,
           is_past: diff.is_past
         };
@@ -417,7 +434,7 @@ function handleClientFallback(url, options = {}) {
     if (method === 'GET') {
       const formatted = items.map(a => ({
         ...a,
-        days_remaining: calcDaysRemaining(a.submission_date).days_remaining
+        days_left: calcDaysRemaining(a.submission_date).days_left
       }));
       return { success: true, assignments: formatted };
     }
@@ -447,14 +464,8 @@ function handleClientFallback(url, options = {}) {
   // 9. Expenses
   if (url.includes('/api/expenses')) {
     let items = JSON.parse(localStorage.getItem('nexora_expenses') || '[]');
-    if (method === 'GET') {
-      const formatted = items.map(e => ({
-        ...e,
-        expense_date_str: e.expense_date
-      }));
-      const total = items.reduce((sum, e) => sum + Number(e.amount || 0), 0);
-      return { success: true, expenses: formatted, month_total: total };
-    }
+    
+    // Toggle / Delete / Create / Update
     if (method === 'POST') {
       const newItem = { id: Date.now(), ...body };
       items.unshift(newItem);
@@ -476,9 +487,44 @@ function handleClientFallback(url, options = {}) {
         return { success: true, message: 'Expense deleted!' };
       }
     }
+
+    // GET
+    const formatted = items.map(e => ({
+      ...e,
+      expense_date_str: e.expense_date
+    }));
+    const total = items.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+
+    // Build category summary
+    const catMap = {};
+    items.forEach(e => {
+      const cat = e.category || 'Other';
+      if (!catMap[cat]) catMap[cat] = { category: cat, count: 0, total: 0 };
+      catMap[cat].count += 1;
+      catMap[cat].total += Number(e.amount || 0);
+    });
+
+    return {
+      success: true,
+      expenses: formatted,
+      total_amount: total,
+      month_total: total,
+      category_summary: Object.values(catMap)
+    };
   }
 
-  // 10. Tasks & Notes generic CRUD
+  // 10. Tasks & Notes generic CRUD + Task Toggle
+  if (url.includes('/api/tasks') && url.includes('/toggle')) {
+    let tasks = JSON.parse(localStorage.getItem('nexora_tasks') || '[]');
+    const idMatch = url.match(/\/api\/tasks\/(\d+)\/toggle/);
+    if (idMatch) {
+      const taskId = Number(idMatch[1]);
+      tasks = tasks.map(t => t.id === taskId ? { ...t, status: t.status === 'Completed' ? 'Pending' : 'Completed' } : t);
+      localStorage.setItem('nexora_tasks', JSON.stringify(tasks));
+      return { success: true, message: 'Task status updated!' };
+    }
+  }
+
   const simpleCols = ['tasks', 'notes'];
   for (const col of simpleCols) {
     if (url.includes(`/api/${col}`)) {
@@ -518,16 +564,58 @@ function handleClientFallback(url, options = {}) {
   if (url.includes('/api/progress/summary')) {
     const tasks = JSON.parse(localStorage.getItem('nexora_tasks') || '[]');
     const assignments = JSON.parse(localStorage.getItem('nexora_assignments') || '[]');
+    const expenses = JSON.parse(localStorage.getItem('nexora_expenses') || '[]');
+
     const totalTasks = tasks.length;
     const completedTasks = tasks.filter(t => t.status === 'Completed').length;
+    const taskPct = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
     const totalAssign = assignments.length;
     const completedAssign = assignments.filter(a => a.status === 'Completed').length;
+    const assignPct = totalAssign ? Math.round((completedAssign / totalAssign) * 100) : 0;
+
+    // Subject breakdown for assignments
+    const subMap = {};
+    assignments.forEach(a => {
+      const s = a.subject || 'General';
+      if (!subMap[s]) subMap[s] = { subject: s, total: 0, completed: 0 };
+      subMap[s].total += 1;
+      if (a.status === 'Completed') subMap[s].completed += 1;
+    });
+
+    const bySubject = Object.values(subMap).map(s => ({
+      ...s,
+      rate: s.total ? Math.round((s.completed / s.total) * 100) : 0
+    }));
+
+    // Expense breakdown
+    const totalExp = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+    const catMap = {};
+    expenses.forEach(e => {
+      const cat = e.category || 'Other';
+      if (!catMap[cat]) catMap[cat] = { category: cat, total: 0 };
+      catMap[cat].total += Number(e.amount || 0);
+    });
 
     return {
       success: true,
-      tasks: { total: totalTasks, completed: completedTasks, pending: totalTasks - completedTasks, completion_rate: totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0 },
-      assignments: { total: totalAssign, completed: completedAssign, pending: totalAssign - completedAssign, completion_rate: totalAssign ? Math.round((completedAssign / totalAssign) * 100) : 0 },
-      recent_activity: tasks.slice(0, 5).map(t => ({ title: t.title, type: 'Task', status: t.status, date: t.due_date }))
+      tasks: {
+        total: totalTasks,
+        completed: completedTasks,
+        pending: totalTasks - completedTasks,
+        percentage: taskPct
+      },
+      assignments: {
+        total: totalAssign,
+        completed: completedAssign,
+        pending: totalAssign - completedAssign,
+        percentage: assignPct,
+        by_subject: bySubject
+      },
+      expenses: {
+        total: totalExp,
+        categories: Object.values(catMap)
+      }
     };
   }
 
