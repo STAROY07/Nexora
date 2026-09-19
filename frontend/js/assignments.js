@@ -7,10 +7,26 @@ let currentAssignmentFilter = 'All';
 let editingAssignmentId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadAssignmentStats();
   loadAssignments();
   initAssignmentFilters();
   initAssignmentForm();
 });
+
+async function loadAssignmentStats() {
+  const data = await fetchAPI('/api/assignments');
+  if (!data || !data.success) return;
+  const assignments = data.assignments || [];
+  const total = assignments.length;
+  const completed = assignments.filter(a => a.status === 'Completed').length;
+  const pending = total - completed;
+  const totalEl = document.getElementById('assignStatTotal');
+  const pendingEl = document.getElementById('assignStatPending');
+  const completedEl = document.getElementById('assignStatCompleted');
+  if (totalEl) totalEl.textContent = total;
+  if (pendingEl) pendingEl.textContent = pending;
+  if (completedEl) completedEl.textContent = completed;
+}
 
 async function loadAssignments() {
   const container = document.getElementById('assignmentsGridContainer');
@@ -185,6 +201,7 @@ async function toggleAssignmentStatus(id) {
   const res = await fetchAPI(`/api/assignments/${id}/toggle`, { method: 'PATCH' });
   if (res && res.success) {
     showToast(res.message, 'success');
+    loadAssignmentStats();
     loadAssignments();
   }
 }
@@ -195,6 +212,7 @@ async function deleteAssignment(id) {
   const res = await fetchAPI(`/api/assignments/${id}`, { method: 'DELETE' });
   if (res && res.success) {
     showToast(res.message, 'success');
+    loadAssignmentStats();
     loadAssignments();
   }
 }

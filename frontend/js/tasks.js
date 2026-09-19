@@ -8,10 +8,26 @@ let currentPriority = 'All';
 let editingTaskId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadTaskStats();
   loadTasks();
   initTaskFilters();
   initTaskForm();
 });
+
+async function loadTaskStats() {
+  const data = await fetchAPI('/api/tasks');
+  if (!data || !data.success) return;
+  const tasks = data.tasks || [];
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.status === 'Completed').length;
+  const pending = total - completed;
+  const totalEl = document.getElementById('taskStatTotal');
+  const pendingEl = document.getElementById('taskStatPending');
+  const completedEl = document.getElementById('taskStatCompleted');
+  if (totalEl) totalEl.textContent = total;
+  if (pendingEl) pendingEl.textContent = pending;
+  if (completedEl) completedEl.textContent = completed;
+}
 
 async function loadTasks() {
   const container = document.getElementById('tasksListContainer');
@@ -176,6 +192,7 @@ async function toggleTaskStatus(taskId) {
   const res = await fetchAPI(`/api/tasks/${taskId}/toggle`, { method: 'PATCH' });
   if (res && res.success) {
     showToast(res.message, 'success');
+    loadTaskStats();
     loadTasks();
   }
 }
@@ -186,6 +203,7 @@ async function deleteTask(taskId) {
   const res = await fetchAPI(`/api/tasks/${taskId}`, { method: 'DELETE' });
   if (res && res.success) {
     showToast(res.message, 'success');
+    loadTaskStats();
     loadTasks();
   }
 }

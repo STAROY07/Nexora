@@ -3,7 +3,7 @@
  * Main Frontend Script: Navigation, LocalStorage Fallback Store, and Common Utilities
  */
 
-const DATA_STORAGE_VERSION = 'nexora_data_v4';
+const DATA_STORAGE_VERSION = 'nexora_data_v5';
 
 document.addEventListener('DOMContentLoaded', () => {
   initLocalStorageData();
@@ -432,7 +432,13 @@ function handleClientFallback(url, options = {}) {
   if (url.includes('/api/assignments')) {
     let items = JSON.parse(localStorage.getItem('nexora_assignments') || '[]');
     if (method === 'GET') {
-      const formatted = items.map(a => ({
+      const urlObj = new URL(url, 'http://localhost');
+      const statusFilter = urlObj.searchParams.get('status');
+      let filtered = [...items];
+      if (statusFilter && statusFilter !== 'All') {
+        filtered = filtered.filter(a => a.status === statusFilter);
+      }
+      const formatted = filtered.map(a => ({
         ...a,
         days_left: calcDaysRemaining(a.submission_date).days_left
       }));
@@ -525,13 +531,36 @@ function handleClientFallback(url, options = {}) {
     }
   }
 
+  // Assignment Toggle
+  if (url.includes('/api/assignments') && url.includes('/toggle')) {
+    let items = JSON.parse(localStorage.getItem('nexora_assignments') || '[]');
+    const idMatch = url.match(/\/api\/assignments\/(\d+)\/toggle/);
+    if (idMatch) {
+      const aId = Number(idMatch[1]);
+      items = items.map(a => a.id === aId ? { ...a, status: a.status === 'Completed' ? 'Pending' : 'Completed' } : a);
+      localStorage.setItem('nexora_assignments', JSON.stringify(items));
+      return { success: true, message: 'Assignment status updated!' };
+    }
+  }
+
   const simpleCols = ['tasks', 'notes'];
   for (const col of simpleCols) {
     if (url.includes(`/api/${col}`)) {
       let items = JSON.parse(localStorage.getItem(`nexora_${col}`) || '[]');
 
       if (method === 'GET' && !url.match(new RegExp(`/api/${col}/\\d+`))) {
-        return { success: true, [col]: items };
+        // Apply status filter
+        const urlObj = new URL(url, 'http://localhost');
+        const statusFilter = urlObj.searchParams.get('status');
+        const priorityFilter = urlObj.searchParams.get('priority');
+        let filtered = [...items];
+        if (statusFilter && statusFilter !== 'All') {
+          filtered = filtered.filter(item => item.status === statusFilter);
+        }
+        if (col === 'tasks' && priorityFilter && priorityFilter !== 'All') {
+          filtered = filtered.filter(item => item.priority === priorityFilter);
+        }
+        return { success: true, [col]: filtered };
       }
 
       if (method === 'POST') {

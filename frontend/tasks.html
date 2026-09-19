@@ -91,6 +91,37 @@
       </header>
 
       <main class="content-body">
+        <!-- Summary Stats -->
+        <div class="stats-grid" style="margin-bottom: 20px;">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(139,92,246,0.15); color: var(--primary);">
+              <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value" id="taskStatTotal">0</div>
+              <div class="stat-label">Total Tasks</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(245,158,11,0.15); color: var(--warning);">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value" id="taskStatPending">0</div>
+              <div class="stat-label">Pending</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(16,185,129,0.15); color: var(--success);">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value" id="taskStatCompleted">0</div>
+              <div class="stat-label">Completed</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Filter Controls -->
         <div class="filter-bar">
           <div class="tab-group">
